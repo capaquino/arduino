@@ -14,11 +14,15 @@ Adafruit_seesaw ss;
 #define SCL_PIN 8
 Adafruit_ssd1306syp display(SDA_PIN,SCL_PIN);
 
+// Bluetooth
+#include <SoftwareSerial.h>
+SoftwareSerial BTserial(4, 5); // RX | TX
+
 void setup()
 {
   // Light Sensor
   analogReference(EXTERNAL);
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Adafruit Analog Light Sensor Test");
 
   // Moisture Sensor
@@ -37,6 +41,9 @@ void setup()
   // OLED
   delay(1000);
   display.initialize(); 
+
+  // Bluetooth
+  BTserial.begin(9600);
 }
 
 void loop() 
@@ -81,7 +88,18 @@ void loop()
   // delay(5000);
   // display.clear();
 
-  delay(3000);
+  // Bluetooth
+  BTserial.print("Raw = ");
+  BTserial.print(rawValue);
+  BTserial.print(", Lux: ");
+  BTserial.print(RawToLux(rawValue)); 
+  BTserial.print(", Temp: ");
+  BTserial.print(tempC); 
+  BTserial.print(", Cap: ");
+  BTserial.println(capread);
+
+  // ---------
+  delay(1000);
 }
 
 // Light Sensor
